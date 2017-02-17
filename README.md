@@ -1,6 +1,6 @@
 ## 500px Coding Challenge
 This app pulls popular photos from the 500px api and provides a way to browse them.
-It's built in node.js & React
+It's built in node.js & React.
 
 ## Setup
 Run `$ yarn` to install all dependancies
