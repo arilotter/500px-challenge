@@ -7,3 +7,21 @@ Run `$ yarn` to install all dependancies
 
 ## Running
 To start the backend, run `$ yarn start`. By default, the backend runs on port 8080.
+
+## Backend API
+All API calls should be made to the ```/api``` endpoint.
+
+Popular posts can be fetched with a GET request to ```/api/popular/<page>```.
+This will return an object of the form
+```
+{
+  page: 2,
+  photos: [
+    {
+      id: 12345678,
+      title: "A nice photo",
+      fullname: "Anice Name"
+    }
+  ]
+}
+```
