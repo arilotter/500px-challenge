@@ -1,0 +1,11 @@
+{
+  "name": "500px-popular",
+  "version": "1.0.0",
+  "description": "The 500px code challenge",
+  "main": "server.js",
+  "author": "arilotter <arilotter@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.14.1"
+  }
+}
