@@ -8,6 +8,7 @@ const PhotoGrid = ({ photos }) => {
   const photoTiles = photos.map(photo => (
     <PhotoTile
       title={photo.title}
+      thumbnailUrl={photo.thumbnailUrl}
       key={photo.id}
     />
   ));
