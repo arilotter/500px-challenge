@@ -22,9 +22,12 @@ function parsePhotos (json) {
     }
     const shortPhotos = json.photos.map(photo => {
       // Not every property needs to be sent to the client, so only keep what's needed.
-      const { id, name, user } = photo;
+      const { id, name, user, images } = photo;
       const { fullname } = user;
-      return { id, title: name, fullname };
+      const getImageUrl = (size) => images.filter(image => image.size === size)[0].https_url;
+      const thumbnailUrl = getImageUrl(2);
+      const photoUrl = getImageUrl(1080);
+      return { id, title: name, fullname, thumbnailUrl, photoUrl };
     });
     return resolve({ page: current_page, photos: shortPhotos });
   });
@@ -34,6 +37,7 @@ function parsePhotos (json) {
 function popular (page) {
   const params = {
     feature: 'popular',
+    image_size: '2, 1080', // get both a thumbnail and full size image
     page: page || 0 // Begin loading at the first page if a page parameter isn't passed
   };
   return queryAPI('photos', params).then(parsePhotos);
