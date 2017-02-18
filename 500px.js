@@ -25,7 +25,7 @@ function parsePhotos (json) {
       const { id, name, user, images } = photo;
       const { fullname } = user;
       const getImageUrl = (size) => images.filter(image => image.size === size)[0].https_url;
-      const thumbnailUrl = getImageUrl(2);
+      const thumbnailUrl = getImageUrl(30);
       const photoUrl = getImageUrl(1080);
       return { id, title: name, fullname, thumbnailUrl, photoUrl };
     });
@@ -37,7 +37,7 @@ function parsePhotos (json) {
 function popular (page) {
   const params = {
     feature: 'popular',
-    image_size: '2, 1080', // get both a thumbnail and full size image
+    image_size: '30, 1080', // get both a thumbnail and full size image
     page: page || 0 // Begin loading at the first page if a page parameter isn't passed
   };
   return queryAPI('photos', params).then(parsePhotos);
