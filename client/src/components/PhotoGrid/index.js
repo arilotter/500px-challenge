@@ -5,7 +5,12 @@ import PhotoTile from '../PhotoTile';
 
 
 const PhotoGrid = ({ photos }) => {
-  const photoTiles = photos.map(photo => <PhotoTile title={photo.title} />);
+  const photoTiles = photos.map(photo => (
+    <PhotoTile
+      title={photo.title}
+      key={photo.id}
+    />
+  ));
   return (
     <div>{photoTiles}</div>
   );
