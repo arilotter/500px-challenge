@@ -15,15 +15,18 @@ function queryAPI (method, params) {
 }
 
 function parsePhotos (json) {
-  return new Promise((resolve) => {
-    const { current_page } = json;
+  return new Promise((resolve, reject) => {
+    const { error, current_page } = json;
+    if (error) {
+      return reject(error);
+    }
     const shortPhotos = json.photos.map(photo => {
       // Not every property needs to be sent to the client, so only keep what's needed.
       const { id, name, user } = photo;
       const { fullname } = user;
       return { id, title: name, fullname };
     });
-    resolve({ page: current_page, photos: shortPhotos });
+    return resolve({ page: current_page, photos: shortPhotos });
   });
 }
 
