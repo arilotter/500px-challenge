@@ -4,7 +4,7 @@ const { consumerKey } = require('./config.json');
 const imageSizes = require('./sizes.json');
 
 const baseUrl = 'https://api.500px.com/v1/';
-const THUMBNAIL_TYPE = 31;
+const THUMBNAIL_TYPE = 30;
 
 // All API documentation is available at https://github.com/500px/api-documentation/
 
@@ -29,9 +29,14 @@ function parsePhotos (json) {
       const getImageUrl = (size) => images.filter(image => image.size === size)[0].https_url;
       const thumbnailUrl = getImageUrl(THUMBNAIL_TYPE);
       const photoUrl = getImageUrl(1080);
-      const thumbDimensions = imageSizes[THUMBNAIL_TYPE];
+      const thumbDimensions = JSON.parse(JSON.stringify(imageSizes[THUMBNAIL_TYPE])); // clone the object so we can set properties on it
       if (thumbDimensions === undefined) {
         return reject('Invalid thumbnail type given');
+      }
+
+      if (thumbDimensions.longest) {
+        // Set the longest dimension of the photo to the size value from the 500px api.
+        thumbDimensions[width > height ? 'width' : 'height'] = thumbDimensions.longest;
       }
 
       // To calculate the width / height of the thumbnails, preserve aspect ratio:
