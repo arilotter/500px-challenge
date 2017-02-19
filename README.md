@@ -8,6 +8,12 @@ Run `$ yarn` to install all dependancies
 ## Running
 To start the backend, run `$ yarn start`. By default, the backend runs on port 8080.
 
+To start the frontend, 
+```
+$ cd client
+$ yarn start
+```
+
 ## Backend API
 All API calls should be made to the ```/api``` endpoint.
 
@@ -20,7 +26,9 @@ This will return an object of the form
     {
       id: 12345678,
       title: "A nice photo",
-      fullname: "Anice Name"
+      fullname: "Anice Name",
+      thumbnailUrl: "https://example.com/thumbnail.jpg",
+      photoUrl: "https://example.com/large.jpg"
     }
   ]
 }
