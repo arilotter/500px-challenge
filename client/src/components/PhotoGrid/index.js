@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import MasonryInfiniteScroller from 'react-masonry-infinite';
 
 import './style.css';
 import PhotoTile from '../PhotoTile';
@@ -11,14 +12,18 @@ export default class PhotoGrid extends Component {
       photos: [],
       page: 0
     };
-    this.loadPage = this.loadPage.bind(this); // So we can use 'this' in the method
-  }
-  componentWillMount () {
-    this.loadPage();
+    this.loadMore = this.loadMore.bind(this); // So we can use 'this' in the method
+    this.sizes = [
+      { columns: 3, gutter: 16 }
+    ];
   }
 
-  loadPage () {
-    window.fetch('/api/popular/' + this.state.page)
+  componentWillMount () {
+    this.loadMore();
+  }
+
+  loadMore () {
+    window.fetch('/api/popular/' + (this.state.page + 1))
       .then(res => res.json())
       .then(({page, photos}) => {
         if (page <= this.state.page) {
@@ -32,15 +37,24 @@ export default class PhotoGrid extends Component {
   }
 
   render () {
-    const photoTiles = this.state.photos.map(photo => (
-      <PhotoTile
-        title={photo.title}
-        thumbnailUrl={photo.thumbnailUrl}
-        key={photo.id}
-      />
-    ));
     return (
-      <div className='photoGrid'>{photoTiles}</div>
+      <MasonryInfiniteScroller
+        className='photoGrid'
+        pageStart={1}
+        loadMore={this.loadMore}
+        sizes={this.sizes}
+        hasMore
+      >
+        {
+          this.state.photos.map(photo => (
+            <PhotoTile
+              title={photo.title}
+              thumbnailUrl={photo.thumbnailUrl}
+              key={photo.id}
+            />
+          ))
+        }
+      </MasonryInfiniteScroller>
     );
   }
 }

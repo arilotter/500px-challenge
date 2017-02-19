@@ -4,7 +4,7 @@ import './style.css';
 const PhotoTile = (props) => {
   return (
     <div className='photoTile'>
-      <img
+      <img className='tileImage'
         src={props.thumbnailUrl}
         alt={props.title}
       />
