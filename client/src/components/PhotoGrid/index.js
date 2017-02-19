@@ -10,16 +10,13 @@ export default class PhotoGrid extends Component {
     super(props);
     this.state = {
       photos: [],
-      page: 0
+      page: 0,
+      photoWidth: 300
     };
     this.loadMore = this.loadMore.bind(this); // So we can use 'this' in the method
     this.sizes = [
-      { columns: 3, gutter: 16 }
+      { columns: 4, gutter: 16 }
     ];
-  }
-
-  componentWillMount () {
-    this.loadMore();
   }
 
   loadMore () {
@@ -46,13 +43,16 @@ export default class PhotoGrid extends Component {
         hasMore
       >
         {
-          this.state.photos.map(photo => (
-            <PhotoTile
+          this.state.photos.map(photo => {
+            const calculatedHeight = Math.round(this.state.photoWidth / photo.thumbWidth * photo.thumbHeight);
+            return (<PhotoTile
+              key={photo.id}
               title={photo.title}
               thumbnailUrl={photo.thumbnailUrl}
-              key={photo.id}
-            />
-          ))
+              width={this.state.photoWidth}
+              height={calculatedHeight}
+            />);
+          })
         }
       </MasonryInfiniteScroller>
     );
