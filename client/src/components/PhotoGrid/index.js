@@ -17,6 +17,7 @@ export default class PhotoGrid extends Component {
     this.sizes = [
       { columns: 4, gutter: 16 }
     ];
+    this.photoIDs = [];
   }
 
   loadMore () {
@@ -26,8 +27,12 @@ export default class PhotoGrid extends Component {
         if (page <= this.state.page) {
           return console.error('Tried to load an already-loaded page.');
         }
+        // Eliminate any duplicates
+        const newPhotos = photos.filter(photo => !this.photoIDs.includes(photo.id));
+        // Keep track of all photo IDs
+        this.photoIDs = [...this.photoIDs, ...newPhotos.map(photo => photo.id)];
         this.setState({
-          photos: [...this.state.photos, ...photos],
+          photos: [...this.state.photos, ...newPhotos],
           page: page
         });
       });
