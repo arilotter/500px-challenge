@@ -28,7 +28,9 @@ This will return an object of the form
       title: "A nice photo",
       fullname: "Anice Name",
       thumbnailUrl: "https://example.com/thumbnail.jpg",
-      photoUrl: "https://example.com/large.jpg"
+      photoUrl: "https://example.com/large.jpg",
+      thumbWidth: 640,
+      thumbHeight: 480
     }
   ]
 }

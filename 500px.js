@@ -1,8 +1,10 @@
 const fetch = require('node-fetch');
 const querystring = require('querystring');
 const { consumerKey } = require('./config.json');
+const imageSizes = require('./sizes.json');
 
 const baseUrl = 'https://api.500px.com/v1/';
+const THUMBNAIL_TYPE = 31;
 
 // All API documentation is available at https://github.com/500px/api-documentation/
 
@@ -22,12 +24,33 @@ function parsePhotos (json) {
     }
     const shortPhotos = json.photos.map(photo => {
       // Not every property needs to be sent to the client, so only keep what's needed.
-      const { id, name, user, images } = photo;
+      const { id, name, user, images, width, height } = photo;
       const { fullname } = user;
       const getImageUrl = (size) => images.filter(image => image.size === size)[0].https_url;
-      const thumbnailUrl = getImageUrl(30);
+      const thumbnailUrl = getImageUrl(THUMBNAIL_TYPE);
       const photoUrl = getImageUrl(1080);
-      return { id, title: name, fullname, thumbnailUrl, photoUrl };
+      const thumbDimensions = imageSizes[THUMBNAIL_TYPE];
+      if (thumbDimensions === undefined) {
+        return reject('Invalid thumbnail type given');
+      }
+
+      // To calculate the width / height of the thumbnails, preserve aspect ratio:
+      // thumbnailWidth / thumbnailHeight = photoWidth / photoHeight
+      // Therefore, knowing the length of one edge of the thumbnail
+      // and knowing the width and height of the original photo,
+      // we can calculate the second dimension of the thumbnail given one of them.
+      const thumbWidth = thumbDimensions.width || Math.round(width / height * thumbDimensions.height);
+      const thumbHeight = thumbDimensions.height || Math.round(height / width * thumbDimensions.width);
+
+      return {
+        id,
+        fullname,
+        thumbnailUrl,
+        photoUrl,
+        thumbWidth,
+        thumbHeight,
+        title: name
+      };
     });
     return resolve({ page: current_page, photos: shortPhotos });
   });
@@ -37,7 +60,7 @@ function parsePhotos (json) {
 function popular (page) {
   const params = {
     feature: 'popular',
-    image_size: '30, 1080', // get both a thumbnail and full size image
+    image_size: `${THUMBNAIL_TYPE}, 1080`, // get both a thumbnail and full size image
     page: page || 0 // Begin loading at the first page if a page parameter isn't passed
   };
   return queryAPI('photos', params).then(parsePhotos);
