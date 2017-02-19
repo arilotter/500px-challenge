@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import MasonryInfiniteScroller from 'react-masonry-infinite';
-
-import './style.css';
 import PhotoTile from '../PhotoTile';
+import Spinner from '../Spinner';
+import './style.css';
 
 
 export default class PhotoGrid extends Component {
@@ -40,6 +40,7 @@ export default class PhotoGrid extends Component {
         pageStart={1}
         loadMore={this.loadMore}
         sizes={this.sizes}
+        loader={<Spinner />}
         hasMore
       >
         {
