@@ -11,8 +11,7 @@ export default class PhotoGrid extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      photos: [],
-      page: 0
+      photos: []
     };
     this.loadMore = this.loadMore.bind(this); // So we can use 'this' in the method
     // columns
@@ -21,15 +20,14 @@ export default class PhotoGrid extends Component {
       const mq = i > 0 ? (columns + 1) * GUTTER_WIDTH + columns * PHOTO_WIDTH + 'px' : undefined; // the smallest breakpoint shouldn't have a specified size
       return { mq, columns, gutter: GUTTER_WIDTH };
     });
-    console.log(this.sizes);
     this.photoIDs = [];
   }
 
-  loadMore () {
-    window.fetch('/api/popular/' + (this.state.page + 1))
+  loadMore (newPage) {
+    window.fetch('/api/popular/' + newPage)
       .then(res => res.json())
-      .then(({page, photos}) => {
-        if (page <= this.state.page) {
+      .then(({loadedPage, photos}) => {
+        if (loadedPage <= newPage) {
           return console.error('Tried to load an already-loaded page.');
         }
         // Eliminate any duplicates
@@ -37,8 +35,7 @@ export default class PhotoGrid extends Component {
         // Keep track of all photo IDs
         this.photoIDs = [...this.photoIDs, ...newPhotos.map(photo => photo.id)];
         this.setState({
-          photos: [...this.state.photos, ...newPhotos],
-          page: page
+          photos: [...this.state.photos, ...newPhotos]
         });
       });
   }
@@ -47,7 +44,7 @@ export default class PhotoGrid extends Component {
     return (
       <MasonryInfiniteScroller
         className='photoGrid'
-        pageStart={1}
+        pageStart={0}
         loadMore={this.loadMore}
         sizes={this.sizes}
         loader={<Spinner />}
