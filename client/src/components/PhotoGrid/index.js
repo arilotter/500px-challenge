@@ -4,19 +4,24 @@ import PhotoTile from '../PhotoTile';
 import Spinner from '../Spinner';
 import './style.css';
 
+const GUTTER_WIDTH = 16;
+const PHOTO_WIDTH = Math.min((window.screen.width - GUTTER_WIDTH * 3) / 2, 300); // Scale images based on maximum window size (for mobile)
 
 export default class PhotoGrid extends Component {
   constructor (props) {
     super(props);
     this.state = {
       photos: [],
-      page: 0,
-      photoWidth: 300
+      page: 0
     };
     this.loadMore = this.loadMore.bind(this); // So we can use 'this' in the method
-    this.sizes = [
-      { columns: 4, gutter: 16 }
-    ];
+    // columns
+    this.sizes = [...Array(25).keys()].map(i => { // Support filling up to 8k monitors :)
+      const columns = i + 1;
+      const mq = i > 0 ? (columns + 1) * GUTTER_WIDTH + columns * PHOTO_WIDTH + 'px' : undefined; // the smallest breakpoint shouldn't have a specified size
+      return { mq, columns, gutter: GUTTER_WIDTH };
+    });
+    console.log(this.sizes);
     this.photoIDs = [];
   }
 
@@ -50,12 +55,12 @@ export default class PhotoGrid extends Component {
       >
         {
           this.state.photos.map(photo => {
-            const calculatedHeight = Math.round(this.state.photoWidth / photo.thumbWidth * photo.thumbHeight);
+            const calculatedHeight = Math.round(PHOTO_WIDTH / photo.thumbWidth * photo.thumbHeight);
             return (<PhotoTile
               key={photo.id}
               title={photo.title}
               thumbnailUrl={photo.thumbnailUrl}
-              width={this.state.photoWidth}
+              width={PHOTO_WIDTH}
               height={calculatedHeight}
             />);
           })
