@@ -30,7 +30,7 @@ function parsePhotos (json) {
       const thumbnailUrl = getImageUrl(THUMBNAIL_TYPE);
       const photoUrl = getImageUrl(1080);
       const thumbDimensions = JSON.parse(JSON.stringify(imageSizes[THUMBNAIL_TYPE])); // clone the object so we can set properties on it
-      if (thumbDimensions === undefined) {
+      if (typeof thumbDimensions === "undefined") {
         return reject('Invalid thumbnail type given');
       }
 
