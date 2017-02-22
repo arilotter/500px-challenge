@@ -64,6 +64,7 @@ export default class PhotoGrid extends Component {
             return (<PhotoTile
               key={photo.id}
               title={photo.title}
+              author={photo.fullname}
               thumbnailUrl={photo.thumbnailUrl}
               width={this.state.photoWidth}
               height={calculatedHeight}

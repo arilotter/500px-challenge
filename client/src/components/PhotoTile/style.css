@@ -1,6 +1,42 @@
 .photoTile {
   padding: 0;
   opacity: 0;
+  position: relative;
+}
+
+.photoTile img {
+  display: block;
+}
+
+.photoTile:hover {
+  z-index: 10;
+}
+
+.photoDetailsContainer {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  z-index: -1;
+  padding: 8px;
+}
+
+.photoTile:hover .photoTileContents {
+  position: absolute;
+  top: -8px;
+  left: -8px;
+  padding: 8px;
+  background: #ffffff;
+  box-shadow: rgba(0, 0, 0, 0.117647) 0px 1px 6px, rgba(0, 0, 0, 0.117647) 0px 1px 4px;
+  border-radius: 2px;
+}
+
+.photoTile:hover .photoDetailsContainer {
+    display: flex;
+}
+
+.photoTitle {
+  font-size: 32px;
+  text-align: center;
 }
 
 .photoTileLoaded {
