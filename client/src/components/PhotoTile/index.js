@@ -32,7 +32,7 @@ export default class PhotoTile extends Component {
           />
           <div className='photoDetailsContainer'>
             <div className='photoTitle'>{this.props.title}</div>
-            <div className='photoAuthor'>by <strong>{this.props.author}</strong></div>
+            <div className='photoAuthor'>{this.props.author}</div>
           </div>
         </div>
       </div>
