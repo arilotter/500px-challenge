@@ -19,7 +19,10 @@ export default class PhotoTile extends Component {
           height: this.props.height + 'px'
         }}
       >
-        <div className='photoTileContents'>
+        <div
+          className='photoTileContents'
+          onClick={e => window.open(`https://500px.com/photo/${this.props.id}`)}
+        >
           <img
             src={this.props.thumbnailUrl}
             alt={this.props.title}

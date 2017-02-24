@@ -63,6 +63,7 @@ export default class PhotoGrid extends Component {
             const calculatedHeight = Math.round(this.state.photoWidth / photo.thumbWidth * photo.thumbHeight);
             return (<PhotoTile
               key={photo.id}
+              id={photo.id}
               title={photo.title}
               author={photo.fullname}
               thumbnailUrl={photo.thumbnailUrl}
