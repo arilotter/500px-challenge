@@ -4,7 +4,7 @@ const { consumerKey } = require('./config.json');
 const imageSizes = require('./sizes.json');
 
 const baseUrl = 'https://api.500px.com/v1/';
-const THUMBNAIL_TYPE = 30;
+const DEFAULT_THUMBNAIL_TYPE = 30;
 
 // All API documentation is available at https://github.com/500px/api-documentation/
 
@@ -16,7 +16,7 @@ function queryAPI (method, params) {
     .then(res => res.json());
 }
 
-function parsePhotos (json) {
+function parsePhotos (json, thumbnailType) {
   return new Promise((resolve, reject) => {
     const { error, current_page } = json;
     if (error) {
@@ -27,9 +27,9 @@ function parsePhotos (json) {
       const { id, name, user, images, width, height } = photo;
       const { fullname } = user;
       const getImageUrl = (size) => images.filter(image => image.size === size)[0].https_url;
-      const thumbnailUrl = getImageUrl(THUMBNAIL_TYPE);
+      const thumbnailUrl = getImageUrl(thumbnailType);
       const photoUrl = getImageUrl(1080);
-      const thumbDimensions = JSON.parse(JSON.stringify(imageSizes[THUMBNAIL_TYPE])); // clone the object so we can set properties on it
+      const thumbDimensions = JSON.parse(JSON.stringify(imageSizes[thumbnailType])); // clone the object so we can set properties on it
       if (typeof thumbDimensions === 'undefined') {
         return reject('Invalid thumbnail type given');
       }
@@ -62,13 +62,14 @@ function parsePhotos (json) {
 }
 
 // Gets popular photos, returns a promise
-function popular (page) {
+function popular (page, requestedThumbnailType) {
+  const thumbnailType = requestedThumbnailType || DEFAULT_THUMBNAIL_TYPE;
   const params = {
     feature: 'popular',
-    image_size: `${THUMBNAIL_TYPE}, 1080`, // get both a thumbnail and full size image
+    image_size: `${thumbnailType}, 1080`, // get urls for both a thumbnail and full size image
     page: page || 0 // Begin loading at the first page if a page parameter isn't passed
   };
-  return queryAPI('photos', params).then(parsePhotos);
+  return queryAPI('photos', params).then(photos => parsePhotos(photos, thumbnailType));
 }
 
 module.exports = {

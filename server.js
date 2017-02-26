@@ -5,8 +5,8 @@ const app = express();
 
 app.set('port', process.env.PORT || 8080);
 
-app.get('/api/popular/:page', (req, res) => {
-  api.popular(req.params.page)
+app.get('/api/popular/:page/:thumbSize?', (req, res) => {
+  api.popular(req.params.page, req.params.thumbSize)
     .then(json => {
       res.json(json);
     });
