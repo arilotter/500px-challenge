@@ -43,3 +43,9 @@ Currently, the 500px API provides no way to request an image with a specific wid
 This makes sense for the use case on 500px.com, where images are tiled with static heights.
 However, in this application, I tile images with fixed widths, so some portrait images are much lower resolution than the equivalent landscape images.
 
+Mobile devices don't allow elements to be hovered on without also clicking them.
+Originally, I had attempted to open the original source of a photo when a user clicked on that photo, but hovering over a photo for attribution only worked on desktop browsers.
+Instead, I moved the link to the original source of the photo to a button that appeared on hover, which allowed mobile users to "hover" on a photo by clicking it.
+
+To make the website scale from small to large screens, I specified that photos would always appear in such a width that two were always visible side-by-side.
+This ensured that mobile devices could still see many photos, but I could make the photos bigger on desktop.
