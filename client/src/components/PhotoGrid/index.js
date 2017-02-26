@@ -24,7 +24,9 @@ export default class PhotoGrid extends Component {
   }
 
   calculatePhotoWidth () {
-    const photoWidth = Math.min((window.screen.availWidth - GUTTER_WIDTH * 3) / 2, 300); // Scale images based on maximum window size (for mobile)
+    const maxPhotoWidth = 256;
+    const paddedScreenWidth = (window.screen.availWidth - GUTTER_WIDTH * 3);
+    const photoWidth = Math.min(paddedScreenWidth / 2, maxPhotoWidth); // Scale images based on maximum window size (for mobile)
     const columnBreakpoints = [...Array(25).keys()].map(i => { // Support filling up to 8k monitors :)
       const columns = i + 1;
       const mq = i > 0 ? (columns + 1) * GUTTER_WIDTH + columns * photoWidth + 'px' : undefined; // the smallest breakpoint shouldn't have a specified size
