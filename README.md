@@ -1,9 +1,14 @@
-## 500px Coding Challenge
+# 500px Coding Challenge
+
 This app pulls popular photos from the 500px api and provides a way to browse them.
-It's built in node.js & React.
+The backend is built with node.js & express, and the frontend is built with React
 
 ## Setup
-Run `$ yarn` to install all dependancies
+```
+$ yarn
+$ cd client
+$ yarn
+```
 
 ## Running
 To start the development server, run `$ yarn start`. This will open a browser window to the client, and spawn the server in the background.
@@ -11,8 +16,11 @@ To start the development server, run `$ yarn start`. This will open a browser wi
 ## Backend API
 All API calls should be made to the ```/api``` endpoint.
 
-Popular posts can be fetched with a GET request to ```/api/popular/<page>```.
-This will return an object of the form
+Popular posts can be fetched with a GET request to ```/api/popular/<page>/<thumbSize>```.
+
+`thumbSize` should be an integer representing one of the sizes from the [500px image URLs and sizes documentation](https://github.com/500px/api-documentation/blob/master/basics/formats_and_terms.md#image-urls-and-image-sizes).
+
+A call to the `/api/popular` endpoint will return a JSON object of the form:
 ```
 {
   page: 2,
@@ -29,3 +37,9 @@ This will return an object of the form
   ]
 }
 ```
+
+## Development challenges & decisions
+Currently, the 500px API provides no way to request an image with a specific width.
+This makes sense for the use case on 500px.com, where images are tiled with static heights.
+However, in this application, I tile images with fixed widths, so some portrait images are much lower resolution than the equivalent landscape images.
+
