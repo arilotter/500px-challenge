@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import classNames from 'classnames';
 import './style.css';
 
+import PhotoSourceButton from '../PhotoSourceButton';
+
 export default class PhotoTile extends Component {
   constructor (props) {
     super(props);
@@ -19,10 +21,7 @@ export default class PhotoTile extends Component {
           height: this.props.height + 'px'
         }}
       >
-        <div
-          className='photoTileContents'
-          onClick={e => window.open(`https://500px.com/photo/${this.props.id}`)}
-        >
+        <div className='photoTileContents'>
           <img
             src={this.props.thumbnailUrl}
             alt={this.props.title}
@@ -33,6 +32,7 @@ export default class PhotoTile extends Component {
           <div className='photoDetailsContainer'>
             <div className='photoTitle'>{this.props.title}</div>
             <div className='photoAuthor'>{this.props.author}</div>
+            <PhotoSourceButton photoId={this.props.id} />
           </div>
         </div>
       </div>
